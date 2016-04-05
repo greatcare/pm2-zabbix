@@ -9,6 +9,10 @@
     "monitoring"
   ],
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/greatcare/pm2-zabbix.git"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "jsdoc": "scripts/jsdoc.sh"
