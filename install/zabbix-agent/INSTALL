@@ -1,0 +1,7 @@
+Install the pm2-zabbix.conf file in /etc/zabbix/zabbix_agentd.d/ on the host that runs pm2. It needs to have zabbix-agent installed, as well as a global install of the pm2-zabbix npm module.
+If you are running pm2 on a user other than the default of "debian", make sure to change the sudo invocation.
+
+The pm2-zabbix-sudoers file should be saved as /etc/sudoers.d/pm2-zabbix (without any extension - sudo ignores any files containing dots or "~") on the same host.
+This ensures that the zabbix user can launch pm2-zabbix as any user.
+
+If you are not using sudo, you need to find another way of launching pm2-zabbix from UserParameters as the target user. Note that setuid on /usr/local/bin/pm2-zabbix will not work (Linux forbids this for scripts).

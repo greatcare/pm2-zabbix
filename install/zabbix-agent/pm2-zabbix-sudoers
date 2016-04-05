@@ -1,0 +1,1 @@
+zabbix  ALL=(ALL:ALL) NOPASSWD: /usr/local/bin/pm2-zabbix

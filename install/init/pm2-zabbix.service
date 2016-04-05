@@ -1,0 +1,12 @@
+[Unit]
+Description=PM2 monitor for Zabbix
+After=network.target remote-fs.target
+
+[Service]
+Type=simple
+User=debian
+
+ExecStart=/usr/local/bin/pm2-zabbix --monitor
+
+[Install]
+WantedBy=multi-user.target
