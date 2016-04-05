@@ -1,0 +1,28 @@
+{
+  "name": "pm2-zabbix",
+  "version": "0.1.0",
+  "description": "a pm2 monitoring utility for Zabbix that runs in the background",
+  "keywords": [
+    "zabbix",
+    "pm2",
+    "monitor",
+    "monitoring"
+  ],
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "jsdoc": "scripts/jsdoc.sh"
+  },
+  "bin": {
+    "pm2-zabbix": "./monitor.js"
+  },
+  "author": "greatcare software <npm@greatcare.pl>",
+  "license": "MIT",
+  "dependencies": {
+    "minimist": "^1.2.0",
+    "pidusage": "^1.0.1",
+    "pm2": "^1.0.2",
+    "when": "^3.7.7",
+    "zabbix-sender": "^0.2.0"
+  }
+}
