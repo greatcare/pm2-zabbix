@@ -1,0 +1,77 @@
+#!/bin/sh
+
+# Install this file as /etc/init.d/pm2-zabbix
+# Once installed, run `insserv pm2-zabbix` to generate symbolic links,
+#  or create them manually on systems that do not support insserv.
+
+### BEGIN INIT INFO
+# Provides:        pm2-zabbix
+# Required-Start:  $network $remote_fs $syslog
+# Required-Stop:   $network $remote_fs $syslog
+# Default-Start:   2 3 4 5
+# Default-Stop: 
+# Short-Description: Start PM2 monitor for Zabbix
+### END INIT INFO
+
+PATH=/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+. /lib/lsb/init-functions
+
+# Constants. Note that DAEMON_USER and, optionally, PM2_HOME,
+#  can be configured via the defaults file, which you are advised
+#  to copy from the examples to /etc/default/pm2-zabbix .
+
+NAME="pm2-zabbix"
+DAEMON=/usr/local/bin/pm2-zabbix
+PIDFILE=/var/run/pm2-zabbix.pid
+DAEMON_USER=debian
+
+test -x $DAEMON || exit 5
+
+if [ -r /etc/default/pm2-zabbix ]; then
+	. /etc/default/pm2-zabbix
+fi
+
+# Compute DAEMON_HOME after user config from /etc/default has been applied.
+# This takes into account that DAEMON_USER may have been changed.
+DAEMON_HOME=`eval echo "~$DAEMON_USER"`
+
+# Export PM2_HOME if set in the defaults file - used by the pm2 library.
+export PM2_HOME
+
+# Actual start/stop logic
+
+case $1 in
+	start)
+		log_daemon_msg "Starting pm2-zabbix" "pm2-zabbix"
+  		start-stop-daemon --start --oknodo --user $DAEMON_USER --chuid $DAEMON_USER --pidfile $PIDFILE --make-pidfile --background --startas /usr/bin/env -- "HOME=$DAEMON_HOME" $DAEMON
+		status=$?
+		log_end_msg $status
+  		;;
+	stop)
+		log_daemon_msg "Stopping pm2-zabbix" "pm2-zabbix"
+  		start-stop-daemon --stop --quiet --oknodo --user $DAEMON_USER --pidfile $PIDFILE
+		log_end_msg $?
+		rm -f $PIDFILE
+  		;;
+	restart|force-reload)
+		$0 stop && sleep 2 && $0 start
+  		;;
+	try-restart)
+		if $0 status >/dev/null; then
+			$0 restart
+		else
+			exit 0
+		fi
+		;;
+	reload)
+		exit 3
+		;;
+	status)
+		status_of_proc -p "$PIDFILE" "$DAEMON" "$NAME" && exit 0 || exit $?
+		;;
+	*)
+		echo "Usage: $0 {start|stop|restart|try-restart|force-reload|status}"
+		exit 2
+		;;
+esac
