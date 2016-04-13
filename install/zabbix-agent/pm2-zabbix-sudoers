@@ -1,1 +1,7 @@
+# Allow the Zabbix user to run pm2-zabbix as any user, without a password.
 zabbix  ALL=(ALL:ALL) NOPASSWD: /usr/local/bin/pm2-zabbix
+
+# On some systems (notably RHEL and CentOS), sudo is configured to require a tty
+#  by default, which prevents it from working at all with the Zabbix agent.
+# This lifts that default restriction.
+Defaults:zabbix !requiretty
