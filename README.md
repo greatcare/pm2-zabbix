@@ -82,5 +82,9 @@ A template needs to be installed (and assigned to a host) that tells Zabbix of t
 
 The default template file can be found in `install/zabbix-server/` - upload it via the Zabbix management  web UI and assign it to the hosts that you intend to be monitoring PM2 on. Appropriate keys will be created automatically.
 
+## Troubleshooting
+
+If you run into any trouble, be sure to check the [Troubleshooting guide](Troubleshooting.md) as well the issue tracker.
+
 ## License
 MIT - see the `LICENSE` file.
