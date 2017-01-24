@@ -25,7 +25,7 @@
   "dependencies": {
     "minimist": "^1.2.0",
     "pidusage": "^1.0.1",
-    "pm2": "^1.1.1",
+    "pm2": "^2.1.0",
     "when": "^3.7.7",
     "zabbix-sender": "^0.2.0"
   }
