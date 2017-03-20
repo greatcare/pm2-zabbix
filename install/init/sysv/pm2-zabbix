@@ -9,7 +9,7 @@
 # Required-Start:  $network $remote_fs $syslog
 # Required-Stop:   $network $remote_fs $syslog
 # Default-Start:   2 3 4 5
-# Default-Stop: 
+# Default-Stop:
 # Short-Description: Start PM2 monitor for Zabbix
 ### END INIT INFO
 
@@ -44,7 +44,7 @@ export PM2_HOME
 case $1 in
 	start)
 		log_daemon_msg "Starting pm2-zabbix" "pm2-zabbix"
-  		start-stop-daemon --start --oknodo --user $DAEMON_USER --chuid $DAEMON_USER --pidfile $PIDFILE --make-pidfile --background --startas /usr/bin/env -- "HOME=$DAEMON_HOME" $DAEMON
+  		start-stop-daemon --start --oknodo --user $DAEMON_USER --chuid $DAEMON_USER --pidfile $PIDFILE --make-pidfile --background --startas /usr/bin/env -- "HOME=$DAEMON_HOME" $DAEMON --monitor
 		status=$?
 		log_end_msg $status
   		;;
