@@ -56,4 +56,10 @@ monitor.start().done(function() {
 		process.exit(0);
 		return;
 	}
+
+	if (!argv.discover && !argv.monitor) {
+		logger.warn({ event: 'pm2-zabbix#noWork', argv: process.argv }, 'Neither --discover nor --monitor was specified - exiting because we have nothing to do');
+		process.exit(0);
+		return;
+	}
 });
