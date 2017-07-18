@@ -82,6 +82,17 @@ A template needs to be installed (and assigned to a host) that tells Zabbix of t
 
 The default template file can be found in `install/zabbix-server/` - upload it via the Zabbix management  web UI and assign it to the hosts that you intend to be monitoring PM2 on. Appropriate keys will be created automatically.
 
+## Logging
+
+This program can log messages to the standard output in the `bunyan` JSON format. It is possible to obtain detailed diagnostic information by launching with a `LOG_LEVEL` variable set to one of bunyan's levels. Example:
+```
+LOG_LEVEL=info pm2-zabbix --monitor
+```
+
+By default, the `warn` level is used - only errors/warnings result in log messages. Try debug/trace for more under-the-hood insight (`trace` also enables execution log of the underlying `zabbix_sender` binary). The log can be piped through the bunyan CLI tool for prettier formatting.
+
+Note that, in `--discover` mode, in order to avoid amalgamating discovery JSON output for Zabbix and the log output, all logs are sent to `stderr` instead.
+
 ## Troubleshooting
 
 If you run into any trouble, be sure to check the [Troubleshooting guide](Troubleshooting.md) as well the issue tracker.
