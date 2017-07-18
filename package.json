@@ -23,10 +23,11 @@
   "author": "greatcare software <npm@greatcare.pl>",
   "license": "MIT",
   "dependencies": {
+    "bunyan": "^1.8.10",
     "minimist": "^1.2.0",
     "pidusage": "^1.0.1",
     "pm2": "^2.1.0",
     "when": "^3.7.7",
-    "zabbix-sender": "^0.2.0"
+    "zabbix-sender": "github:greatcare/node-zabbix-sender#v0.3.0"
   }
 }

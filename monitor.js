@@ -7,6 +7,7 @@ var PM2ZabbixMonitor = require('./lib/PM2ZabbixMonitor');
 var ZabbixSender = require('zabbix-sender');
 var minimist = require('minimist');
 var os = require('os');
+var bunyan = require('bunyan');
 
 var argv = minimist(process.argv.slice(2));
 var hostname = os.hostname();
@@ -25,15 +26,27 @@ if (argv.help || argv.usage) {
 	process.exit(0);
 }
 
+// If we're going to output JSON, we don't want to mix it with log output.
+// This means we need to push the logs elsewhere.
+var usesOutputMode = (argv.discover);
+var logger = bunyan.createLogger({
+	name: 'pm2-zabbix',
+	level: process.env.LOG_LEVEL || 'warn',
+	// Use stderr if writing JSON to stdout - otherwise, normal stdout is fine.
+	stream: usesOutputMode ? process.stderr : process.stdout
+});
+
 var sender = new ZabbixSender({
 	hostname: argv.hostname || hostname,
-	server: argv.server || undefined
+	server: argv.server || undefined,
+	logger: logger
 });
 var tracker = new PM2Tracker();
 var provider = new ZabbixDataProvider(sender);
 var monitor = new PM2ZabbixMonitor(tracker, provider, {
 	monitor: argv.monitor,
-	debug: argv.debug
+	debug: argv.debug,
+	logger: logger
 });
 
 monitor.start().done(function() {
@@ -43,6 +56,4 @@ monitor.start().done(function() {
 		process.exit(0);
 		return;
 	}
-	
-	console.log('* Client running (monitor mode: %s)', argv.monitor ? 'on' : 'off');
 });
