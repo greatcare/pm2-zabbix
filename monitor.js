@@ -4,7 +4,7 @@ var PM2Tracker = require('./lib/PM2Tracker');
 var ZabbixDataProvider = require('./lib/ZabbixDataProvider');
 var PM2ZabbixMonitor = require('./lib/PM2ZabbixMonitor');
 
-var ZabbixSender = require('zabbix-sender');
+var ZabbixSender = require('node-zabbix-sender');
 var minimist = require('minimist');
 var os = require('os');
 var bunyan = require('bunyan');
