@@ -1,6 +1,6 @@
 {
   "name": "pm2-zabbix",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "a pm2 monitoring utility for Zabbix that runs in the background",
   "keywords": [
     "zabbix",
