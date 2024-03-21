@@ -21,8 +21,9 @@ on:
 jobs:
   bump-version:
     name: "Bump Version"
-    #runs-on: ubuntu-latest
-    runs-on: [ self-hosted ]
+    runs-on: ubuntu-latest
+    # self hosted does not work because this is a public repo (which is not supported by self-hosted)
+    #runs-on: [ self-hosted ]
 
     env:
       PACKAGEJSON_DIR: "."
