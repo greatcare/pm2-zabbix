@@ -67,10 +67,15 @@ jobs:
       - name: "🔎 check new version in package.json"
         run: cat ${{env.PACKAGEJSON_DIR}}/package.json
 
+      - name: create tarball
+        run: git archive --format=tar.gz -o clearvox-pm2-zabbix-${{ steps.version-bump.outputs.newTag }}.tar.gz ${{ github.ref }}
+        shell: bash
+        
+
       - name: "⏫ Upload installable package"
         uses: actions/upload-artifact@v4
         with:
           name: clearvox-pm2-zabbix-${{ steps.version-bump.outputs.newTag }}
-          path: ./
+          path: clearvox-pm2-zabbix-${{ steps.version-bump.outputs.newTag }}.tar.gz
           retention-days: ${{env.ARTIFACTS_RETENTATION_DAYS}}
           if-no-files-found: error
