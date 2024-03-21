@@ -68,6 +68,7 @@ jobs:
         run: cat ${{env.PACKAGEJSON_DIR}}/package.json
 
       - name: create tarball
+        # https://gist.github.com/simonw/a44af92b4b255981161eacc304417368
         run: git archive --format=tar.gz -o clearvox-pm2-zabbix-${{ steps.version-bump.outputs.newTag }}.tar.gz ${{ github.ref }}
         shell: bash
         

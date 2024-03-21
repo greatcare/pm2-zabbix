@@ -28,6 +28,6 @@
     "pidusage": "^1.0.1",
     "pm2": "^5.1.2",
     "when": "^3.7.7",
-    "zabbix-sender": "github:greatcare/node-zabbix-sender#v0.3.0"
+    "zabbix-sender": "git+https://github.com/greatcare/node-zabbix-sender.git"
   }
 }
