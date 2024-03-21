@@ -1,0 +1,75 @@
+#https://github.com/marketplace/actions/automated-version-bump
+
+name: "Bump Version"
+
+on:
+  #push:
+  #  branches:
+  #    - "master"
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    inputs:
+      version-type:
+        type: choice
+        description: ➕ Given a version number MAJOR.MINOR.PATCH, what should we increment (and tag)?
+        options: 
+        - major
+        - minor
+        - patch
+
+jobs:
+  bump-version:
+    name: "Bump Version"
+    #runs-on: ubuntu-latest
+    runs-on: [ self-hosted, clearvox ]
+
+    env:
+      PACKAGEJSON_DIR: "."
+      ARTIFACTS_RETENTATION_DAYS: 1
+
+    # Map a step output to a job output
+    outputs:
+      newTag: ${{ steps.version-bump.outputs.newTag }}
+
+    steps:
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - name: Dump GitHub context
+        id: github_context_step
+        run: |
+          echo '🔎 GitHub context is:\n${{ toJSON(github) }}'
+          echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+
+      - name: "Checkout source code"
+        uses: "actions/checkout@v4"
+        with:
+          token: ${{ secrets.TOKEN_WORKAROUND }}
+          ref: ${{ github.ref }}
+
+      - name: "🔎 check current version in package.json"
+        run: cat ${{env.PACKAGEJSON_DIR}}/package.json
+
+      - name: "🏷️ Bump Version"
+        id: version-bump
+        uses: "phips28/gh-action-bump-version@master"
+        with:
+          tag-prefix: "v"
+          commit-message: "CI: bumps version to {{version}} [skip ci]"
+          version-type: ${{ github.event.inputs.version-type }}
+        env:
+          PACKAGEJSON_DIR: ${{env.PACKAGEJSON_DIR}}
+          # TOKEN_WORKAROUND is a personal token, set at organization level, to bypass branch protection rules
+          # this must be also set in actions/checkout@v4 action: https://github.com/phips28/gh-action-bump-version/issues/62
+          GITHUB_TOKEN: ${{ secrets.TOKEN_WORKAROUND }}
+
+      - name: "🔎 check new version in package.json"
+        run: cat ${{env.PACKAGEJSON_DIR}}/package.json
+
+      - name: "⏫ Upload installable package"
+        uses: actions/upload-artifact@v4
+        with:
+          name: clearvox-pm2-zabbix-${{ steps.version-bump.outputs.newTag }}
+          path: ./
+          retention-days: ${{env.ARTIFACTS_RETENTATION_DAYS}}
+          if-no-files-found: error
